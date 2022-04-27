@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .input-field {
+    @apply block w-full py-3 px-3 mt-2
+    text-white appearance-none
+    border-2 bg-transparent 
+    focus:focus:outline-none placeholder:text-white;
+  }
+  .check-box {
+    @apply border-2 border-white h-8 w-8 bg-transparent;
+  }
+  .label {
+    @apply text-white font-dancingScript text-xl ml-3;
+  }
+}
