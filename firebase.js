@@ -10,7 +10,7 @@ import { getFirestore } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyDO337ZhcIjtcLQ1TK3zo00btkzxoEGyNc',
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: 'hard-b679c.firebaseapp.com',
   projectId: 'hard-b679c',
   storageBucket: 'hard-b679c.appspot.com',
