@@ -235,7 +235,7 @@ const CheckList = ({ user }) => {
               type="submit"
               value="Done"
               className="border-2 border-white m-auto text-white
-            font-bold mt-16 w-[80%] h-[50px]"
+            font-bold  w-[80%] h-[50px]"
             />
           )}
         </form>
