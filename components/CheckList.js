@@ -26,7 +26,7 @@ const CheckList = ({ user }) => {
   const [allChecked, setAllChecked] = useLocalStorage('allChecked', false);
   const [imgUrl, setImgUrl] = useState([]);
   const [attachments, setAttachments] = useState([]);
-  const [weight, setWeight] = useState(0);
+  const [weight, setWeight] = useLocalStorage('weight', 0);
   const router = useRouter();
 
   const handleChange = (e) => {
@@ -72,6 +72,7 @@ const CheckList = ({ user }) => {
           img: data.secure_url,
           lbs: weight,
           completed: true,
+          date: new Date(),
         }
       );
 
@@ -115,6 +116,7 @@ const CheckList = ({ user }) => {
   //         lbs: '',
   //         completed: false,
   //         day: x,
+  //         date: '',
   //       });
   //     }
   //   }
@@ -212,6 +214,7 @@ const CheckList = ({ user }) => {
               name="weight"
               min={100}
               step=".1"
+              value={weight}
               className={
                 'text-white font-bold font-dancingScript text-center bg-transparent border-2 border-white w-[60px] placeholder:font-dancingScript placeholder:text-white'
               }

@@ -20,7 +20,7 @@ export default function Home() {
   }, [auth, router]);
 
   return (
-    <div className="bg-main h-screen w-screen">
+    <div className="bg-main h-screen w-screen max-w-sm m-auto">
       <Header
         user={user}
         title={'75 Hard'}

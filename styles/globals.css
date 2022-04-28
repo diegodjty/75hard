@@ -16,3 +16,7 @@
     @apply text-white font-dancingScript text-xl ml-3;
   }
 }
+
+html {
+  background-color: #2a2a2a;
+}

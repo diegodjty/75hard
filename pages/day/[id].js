@@ -2,9 +2,10 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import Header from '../../components/Header';
 import { useUserContext } from '../../context/state';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, toDate } from 'firebase/firestore';
 import { db } from '../../firebase';
 import Image from 'next/image';
+import { format } from 'date-fns';
 
 const Day = ({}) => {
   const router = useRouter();
@@ -38,11 +39,21 @@ const Day = ({}) => {
       <div className="mt-16 w-[90%] m-auto flex flex-col justify-center items-center">
         {day?.img && (
           <div>
-            <Image src={day?.img} height={300} width={300} alt="img" />
+            <Image
+              src={day?.img}
+              width={300}
+              height={400}
+              alt="img"
+              className="rounded-md"
+            />
           </div>
         )}
-        <div className="text-white font-dancingScript">Apr 4th 2022</div>
-        <div className="text-white font-dancingScript">{day?.lbs} lbs</div>
+        <div className="text-white font-dancingScript text-2xl">
+          {day?.date.toDate().toDateString()}
+        </div>
+        <div className="text-white font-dancingScript text-2xl">
+          {day?.lbs} lbs
+        </div>
       </div>
     </div>
   );
