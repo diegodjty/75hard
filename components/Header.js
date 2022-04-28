@@ -10,7 +10,7 @@ function Header({ user, title, main, route = '', page = '' }) {
   };
   return (
     <div className="flex flex-col">
-      <div className="text-white font-dancingScript text-xl flex w-[90%] m-auto justify-between pt-12 ">
+      <div className="text-white font-dancingScript text-2xl flex w-[90%] m-auto justify-between pt-12 ">
         <div>Hi, {user && user.name}</div>
         <Link href={route}>{page}</Link>
         <div onClick={handleLogout}>Logout</div>
