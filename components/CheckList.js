@@ -2,7 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import useLocalStorage from '../hooks/useLocalStorage';
 import { db } from '../firebase';
-import { doc, getDoc, onSnapshot, setDoc } from 'firebase/firestore';
+import {
+  doc,
+  getDoc,
+  onSnapshot,
+  setDoc,
+  updateDoc,
+  FieldValue,
+  increment,
+} from 'firebase/firestore';
+import { useRouter } from 'next/router';
 
 const CheckList = ({ user }) => {
   const [challenges, setChallenges] = useLocalStorage('challenges', {
@@ -15,6 +24,10 @@ const CheckList = ({ user }) => {
   });
 
   const [allChecked, setAllChecked] = useLocalStorage('allChecked', false);
+  const [imgUrl, setImgUrl] = useState([]);
+  const [attachments, setAttachments] = useState([]);
+  const [weight, setWeight] = useState(0);
+  const router = useRouter();
 
   const handleChange = (e) => {
     if (e.target.checked) {
@@ -30,10 +43,55 @@ const CheckList = ({ user }) => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleWeight = (e) => {
+    setWeight(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    alert('submit');
+    if (!attachments || weight <= 0) {
+      // use cloudinary to get a secured url for images
+      alert('Set Weight and Image');
+    } else {
+      const formData = new FormData();
+      formData.append('file', attachments);
+      formData.append('upload_preset', 'myImages');
+      const { NEXT_PUBLIC_CLOUD_NAME } = process.env;
+      const data = await fetch(
+        `https://api.cloudinary.com/v1_1/${NEXT_PUBLIC_CLOUD_NAME}/image/upload`,
+        {
+          method: 'POST',
+          body: formData,
+        }
+      ).then((r) => r.json());
+
+      await updateDoc(
+        doc(db, 'users', user.uid, 'calendar', user.currentDay.toString()),
+        {
+          img: data.secure_url,
+          lbs: weight,
+          completed: true,
+        }
+      );
+
+      await updateDoc(doc(db, 'users', user.uid), {
+        currentDay: increment(1),
+      });
+
+      setChallenges({
+        water: false,
+        outside_workout: false,
+        inside_workout: false,
+        read: false,
+        diet: false,
+        shower: false,
+      });
+      setAttachments('');
+      setWeight(0);
+      setAllChecked(false);
+      router.push('/calendar');
+    }
   };
 
   useEffect(() => {
@@ -48,19 +106,20 @@ const CheckList = ({ user }) => {
     }
   }, [challenges, setAllChecked]);
 
-  const addDate = async () => {
-    for (let x = 1; x < 76; x++) {
-      if (user[0]) {
-        await setDoc(doc(db, 'users', user[0].uid, 'calendar', x.toString()), {
-          img: '',
-          lbs: '',
-          completed: false,
-          day: x,
-        });
-      }
-    }
-  };
-  addDate();
+  //FUNCTION TO ADD 75 DAYS TO DB
+  // const addDate = async () => {
+  //   for (let x = 1; x < 76; x++) {
+  //     if (user) {
+  //       await setDoc(doc(db, 'users', user.uid, 'calendar', x.toString()), {
+  //         img: '',
+  //         lbs: '',
+  //         completed: false,
+  //         day: x,
+  //       });
+  //     }
+  //   }
+  // };
+  // addDate();
   return (
     <div className="w-[90%] m-auto">
       <div className="text-white font-dancingScript my-5 text-2xl">
@@ -145,6 +204,31 @@ const CheckList = ({ user }) => {
             <label htmlFor="read" className="label">
               Read 10 Pages
             </label>
+          </div>
+          <div className="flex items-end mb-4">
+            <input
+              onChange={handleWeight}
+              type="number"
+              name="weight"
+              min={100}
+              className={
+                'text-white font-bold font-dancingScript text-center bg-transparent border-2 border-white w-[60px] placeholder:font-dancingScript placeholder:text-white'
+              }
+              // value={challenges.read}
+              placeholder="Ex: 150"
+            />
+            <label htmlFor="read" className="label">
+              lbs
+            </label>
+          </div>
+          <div className="flex items-end mb-4">
+            <input
+              type="file"
+              className="block w-full text-sm text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-2 file:text-sm file:font-semibold file:bg-transparent file:text-white file:border-white"
+              onChange={(event) => {
+                setAttachments(event.target.files[0]);
+              }}
+            />
           </div>
           {allChecked && (
             <input

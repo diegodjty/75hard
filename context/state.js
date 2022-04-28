@@ -27,6 +27,7 @@ export function UserProvider({ children }) {
             name: doc.data().name,
             currentDay: doc.data().currentDay,
             uid: auth.uid,
+            calendar: doc.data().calendar,
           });
         });
 

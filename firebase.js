@@ -8,14 +8,13 @@ import {
 import { getFirestore } from 'firebase/firestore';
 
 import { useEffect, useState } from 'react';
-
 const firebaseConfig = {
-  apiKey: 'AIzaSyDO337ZhcIjtcLQ1TK3zo00btkzxoEGyNc',
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: 'hard-b679c.firebaseapp.com',
   projectId: 'hard-b679c',
   storageBucket: 'hard-b679c.appspot.com',
   messagingSenderId: '747615517145',
-  appId: '1:747615517145:web:27c049df6de07790c1c1c8',
+  appId: '1:747615517145:web:9537f90d35eb6ba5c1c1c8',
 };
 
 const app = initializeApp(firebaseConfig);

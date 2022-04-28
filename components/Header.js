@@ -2,7 +2,7 @@ import React from 'react';
 import { logout } from '../firebase';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-function Header({ user, title, main, route, page }) {
+function Header({ user, title, main, route = '', page = '' }) {
   const router = useRouter();
   const handleLogout = () => {
     logout();
