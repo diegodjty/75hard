@@ -50,7 +50,7 @@ const CheckList = ({ user }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!attachments || weight <= 0) {
+    if (attachments.length == 0 || weight <= 0) {
       // use cloudinary to get a secured url for images
       alert('Set Weight and Image');
     } else {
@@ -211,6 +211,7 @@ const CheckList = ({ user }) => {
               type="number"
               name="weight"
               min={100}
+              step=".1"
               className={
                 'text-white font-bold font-dancingScript text-center bg-transparent border-2 border-white w-[60px] placeholder:font-dancingScript placeholder:text-white'
               }
